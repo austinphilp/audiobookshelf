@@ -367,7 +367,7 @@ class ApiRouter {
     })
   }
 
-  async getUserListeningStatsHelpers(userId) {
+  async getUserListeningStatsHelpers(userId, startDate) {
     const today = date.format(new Date(), 'YYYY-MM-DD')
 
     var listeningSessions = await this.getUserListeningSessionsHelper(userId)
@@ -380,6 +380,9 @@ class ApiRouter {
       recentSessions: listeningSessions.slice(0, 10)
     }
     listeningSessions.forEach((s) => {
+      if (s.startedAt < startDate) {
+        return;
+      }
       var sessionTimeListening = s.timeListening
       if (typeof sessionTimeListening == 'string') {
         sessionTimeListening = Number(sessionTimeListening)

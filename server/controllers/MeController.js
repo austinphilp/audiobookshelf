@@ -28,7 +28,8 @@ class MeController {
 
   // GET: api/me/listening-stats
   async getListeningStats(req, res) {
-    var listeningStats = await this.getUserListeningStatsHelpers(req.user.id)
+    // TODO - get start date
+    var listeningStats = await this.getUserListeningStatsHelpers(req.user.id, 0)
     res.json(listeningStats)
   }
 

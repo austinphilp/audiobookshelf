@@ -1,7 +1,7 @@
 <template>
+  <div class="">
+  <h1 class="text-xl">{{ $strings.HeaderYourStats }}</h1>
   <div class="bg-bg rounded-md shadow-lg border border-white border-opacity-5 p-4 mb-8">
-    <h1 class="text-xl">{{ $strings.HeaderYourStats }}</h1>
-
     <div class="flex justify-center">
       <div class="flex p-2">
         <svg class="hidden sm:block h-14 w-14 lg:h-18 lg:w-18" viewBox="0 0 24 24">
@@ -31,13 +31,15 @@
           <span class="material-icons-outlined text-5xl lg:text-6xl">watch_later</span>
         </div>
         <div class="px-1">
-          <p class="text-4xl md:text-5xl font-bold">{{ totalMinutesListening }}</p>
-          <p class="font-book text-xs md:text-sm text-white text-opacity-80">{{ $strings.LabelStatsMinutesListening }}</p>
+          <p class="text-4xl md:text-5xl font-bold">{{ $elapsedPretty(totalTimeListening) }}</p>
+          <p class="font-book text-xs md:text-sm text-white text-opacity-80">{{ $strings.LabelStatsTimeListening }}</p>
         </div>
       </div>
     </div>
+    <stats-daily-listening-chart :listening-stats="listeningStats" class="origin-top-left transform scale-75 lg:scale-100" />
+  </div>
+  <div class="bg-bg rounded-md shadow-lg border border-white border-opacity-5 p-4 mb-8">
     <div class="flex flex-col md:flex-row overflow-hidden max-w-full">
-      <stats-daily-listening-chart :listening-stats="listeningStats" class="origin-top-left transform scale-75 lg:scale-100" />
       <div class="w-80 my-6 mx-auto">
         <div class="flex mb-4 items-center">
           <h1 class="text-2xl font-book">{{ $strings.HeaderStatsRecentSessions }}</h1>
@@ -64,6 +66,7 @@
     </div>
 
     <stats-heatmap v-if="listeningStats" :days-listening="listeningStats.days" class="my-2" />
+  </div>
   </div>
 </template>
 
@@ -102,9 +105,9 @@ export default {
       if (!this.listeningStats) return []
       return this.listeningStats.recentSessions || []
     },
-    totalMinutesListening() {
+    totalTimeListening() {
       if (!this.listeningStats) return 0
-      return Math.round(this.listeningStats.totalTime / 60)
+      return this.listeningStats.totalTime
     },
     totalDaysListened() {
       if (!this.listeningStats) return 0
