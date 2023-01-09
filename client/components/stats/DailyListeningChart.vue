@@ -63,7 +63,7 @@ export default {
     listeningStats: {
       type: Object,
       default: () => {}
-    }
+    },
   },
   data() {
     return {
@@ -74,7 +74,17 @@ export default {
       chartContentHeight: 268
     }
   },
+  watch: {
+    listeningStats () {
+      console.log("Update listening stats")
+      console.log(this.listeningStats)
+      this.$forceUpdate()
+    }
+  },
   computed: {
+    stats() {
+      return this.listeningStats;
+    },
     yAxisLabels() {
       var lbls = []
       for (let i = 6; i >= 0; i--) {
@@ -200,7 +210,7 @@ export default {
       }
     },
     listeningStatsDays() {
-      return this.listeningStats ? this.listeningStats.days || [] : []
+      return this.stats ? this.stats.days || [] : []
     }
   },
   methods: {
@@ -212,8 +222,8 @@ export default {
       return theta * -1
     },
     getMinutesListeningForDate(date) {
-      if (!this.listeningStats || !this.listeningStats.days) return 0
-      return Math.round((this.listeningStats.days[date] || 0) / 60)
+      if (!this.stats || !this.stats.days) return 0
+      return Math.round((this.stats.days[date] || 0) / 60)
     }
   },
   mounted() {}

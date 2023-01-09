@@ -122,7 +122,7 @@
   "HeaderSettingsScanner": "Scanner",
   "HeaderSleepTimer": "Sleep Timer",
   "HeaderStatsLongestItems": "Longest Items (hrs)",
-  "HeaderStatsMinutesListeningChart": "Minutes Listening (last 7 days)",
+  "HeaderStatsMinutesListeningChart": "Minutes Listening",
   "HeaderStatsRecentSessions": "Recent Sessions",
   "HeaderStatsTop10Authors": "Top 10 Authors",
   "HeaderStatsTop5Genres": "Top 5 Genres",
@@ -509,5 +509,6 @@
   "WeekdaySunday": "Sunday",
   "WeekdayThursday": "Thursday",
   "WeekdayTuesday": "Tuesday",
-  "WeekdayWednesday": "Wednesday"
+  "WeekdayWednesday": "Wednesday",
+  "Window": "Time Window"
 }

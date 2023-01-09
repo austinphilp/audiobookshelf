@@ -377,7 +377,8 @@ class ApiRouter {
       days: {},
       dayOfWeek: {},
       today: 0,
-      recentSessions: listeningSessions.slice(0, 10)
+      recentSessions: listeningSessions.slice(0, 10),
+      startDate: startDate,
     }
     listeningSessions.forEach((s) => {
       if (s.startedAt < startDate) {
@@ -388,6 +389,7 @@ class ApiRouter {
         sessionTimeListening = Number(sessionTimeListening)
       }
 
+      // TODO - move this calculation outside of the forEach, calculate average listening time per day of the week
       if (s.dayOfWeek) {
         if (!listeningStats.dayOfWeek[s.dayOfWeek]) listeningStats.dayOfWeek[s.dayOfWeek] = 0
         listeningStats.dayOfWeek[s.dayOfWeek] += sessionTimeListening
@@ -413,6 +415,7 @@ class ApiRouter {
 
       listeningStats.totalTime += sessionTimeListening
     })
+
     return listeningStats
   }
 

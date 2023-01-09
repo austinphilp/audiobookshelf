@@ -2,6 +2,9 @@
   <div class="">
   <h1 class="text-xl">{{ $strings.HeaderYourStats }}</h1>
   <div class="bg-bg rounded-md shadow-lg border border-white border-opacity-5 p-4 mb-8">
+    <div class="justify-right px-3 w-40">
+      <ui-dropdown v-model="currentWindow" :items="statWindows" @input="init" :label="$strings.Window" small />
+    </div>
     <div class="flex justify-center">
       <div class="flex p-2">
         <svg class="hidden sm:block h-14 w-14 lg:h-18 lg:w-18" viewBox="0 0 24 24">
@@ -36,7 +39,7 @@
         </div>
       </div>
     </div>
-    <stats-daily-listening-chart :listening-stats="listeningStats" class="origin-top-left transform scale-75 lg:scale-100" />
+    <stats-daily-listening-chart v-model="listeningChart" :listening-stats.sync="listeningStats" class="origin-top-left transform scale-100 lg:scale-100" />
   </div>
   <div class="bg-bg rounded-md shadow-lg border border-white border-opacity-5 p-4 mb-8">
     <div class="flex flex-col md:flex-row overflow-hidden max-w-full">
@@ -71,11 +74,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 export default {
   data() {
     return {
       listeningStats: null,
-      windowWidth: 0
+      windowWidth: 0,
+      currentWindow: "All Time",
     }
   },
   watch: {
@@ -88,6 +94,14 @@ export default {
   computed: {
     user() {
       return this.$store.state.user.user
+    },
+    statWindows() {
+      return [
+        "Last Week",
+        "Last Month",
+        "Last Year",
+        "All Time"
+      ]
     },
     username() {
       return this.user.username
@@ -116,11 +130,13 @@ export default {
   },
   methods: {
     async init() {
-      this.listeningStats = await this.$axios.$get(`/api/me/listening-stats`).catch((err) => {
+      debugger
+      Vue.set(this, "listeningStats", await this.$axios.$get(`/api/me/listening-stats?timeWindow=${this.currentWindow}`).catch((err) => {
         console.error('Failed to load listening sesions', err)
         return []
-      })
+      }))
       console.log('Loaded user listening data', this.listeningStats)
+      /* Vue.set(this.listeningChart, "listeningStats", this.listeningStats) */
     }
   },
   mounted() {

@@ -1,3 +1,4 @@
+const date = require('../libs/dateAndTime')
 const Logger = require('../Logger')
 const { sort } = require('../libs/fastSort')
 const { isObject, toNumber } = require('../utils/index')
@@ -28,8 +29,15 @@ class MeController {
 
   // GET: api/me/listening-stats
   async getListeningStats(req, res) {
-    // TODO - get start date
-    var listeningStats = await this.getUserListeningStatsHelpers(req.user.id, 0)
+    const today = new Date()
+    const getStartDateByWindow = {
+        "Last Week": _ => date.addDays(today, -7),
+        "Last Month": _ => date.addMonths(today, -1),
+        "Last Year": _ => date.addYears(today, -1),
+        "All Time": _ => new Date(0),
+    }[req.query.timeWindow || "Last Week"]
+    console.log(getStartDateByWindow)
+    var listeningStats = await this.getUserListeningStatsHelpers(req.user.id, getStartDateByWindow())
     res.json(listeningStats)
   }
 
