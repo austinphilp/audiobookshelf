@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <stats-daily-listening-chart v-model="listeningChart" :listening-stats.sync="listeningStats" class="origin-top-left transform scale-100 lg:scale-100" />
+    <stats-daily-listening-chart :listening-stats="listeningStats" class="origin-top-left transform scale-100 lg:scale-100" />
   </div>
   <div class="bg-bg rounded-md shadow-lg border border-white border-opacity-5 p-4 mb-8">
     <div class="flex flex-col md:flex-row overflow-hidden max-w-full">
@@ -131,10 +131,10 @@ export default {
   methods: {
     async init() {
       debugger
-      Vue.set(this, "listeningStats", await this.$axios.$get(`/api/me/listening-stats?timeWindow=${this.currentWindow}`).catch((err) => {
+      this.listeningStats = await this.$axios.$get(`/api/me/listening-stats?timeWindow=${this.currentWindow}`).catch((err) => {
         console.error('Failed to load listening sesions', err)
         return []
-      }))
+      })
       console.log('Loaded user listening data', this.listeningStats)
       /* Vue.set(this.listeningChart, "listeningStats", this.listeningStats) */
     }
